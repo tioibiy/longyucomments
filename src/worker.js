@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-
+ 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
