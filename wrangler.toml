@@ -13,3 +13,8 @@ enabled = true
 [[kv_namespaces]]
 id = "159726cad77c4ceb990080952836d25a"
 binding = "COMMENTS_KV"
+
+[[r2_buckets]]
+binding = "IMAGES_R2_BUCKET"
+bucket_name = "longyu-comment-images"
+preview_bucket_name = "longyu-comment-images"
