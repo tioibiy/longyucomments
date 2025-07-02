@@ -17,4 +17,3 @@ binding = "COMMENTS_KV"
 [[r2_buckets]]
 binding = "IMAGES_R2_BUCKET"
 bucket_name = "longyu-comment-images"
-preview_bucket_name = "longyu-comment-images"

@@ -24,6 +24,27 @@ export default {
       });
     }
 
+    // 图片上传接口
+    if (request.method === 'POST' && url.pathname === '/upload-image') {
+      // 仅支持 multipart/form-data
+      const contentType = request.headers.get('content-type') || '';
+      if (!contentType.includes('multipart/form-data')) {
+        return new Response('Content-Type must be multipart/form-data', { status: 400, headers: corsHeaders() });
+      }
+      const form = await request.formData();
+      const file = form.get('file');
+      if (!file) return new Response('No file', { status: 400, headers: corsHeaders() });
+      // 生成唯一文件名
+      const ext = file.name ? file.name.split('.').pop() : 'png';
+      const key = `img/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
+      await env.IMAGES_R2_BUCKET.put(key, await file.arrayBuffer(), { httpMetadata: { contentType: file.type } });
+      // 生成公开访问 URL（需配置 R2 公网域名或自定义域名）
+      const publicUrl = `https://img.long-yu.net/${key}`;
+      return new Response(JSON.stringify({ url: publicUrl }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders() }
+      });
+    }
+
     if (request.method === 'POST' && url.pathname === '/comment') {
       // 发表新评论
       const key = url.searchParams.get('key');
