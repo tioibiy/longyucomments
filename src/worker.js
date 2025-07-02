@@ -34,10 +34,14 @@ export default {
       } catch {
         return new Response('请求体格式错误', { status: 400, headers: corsHeaders() });
       }
-      const { nick, content } = body;
+      // 支持 replyTo 字段
+      const { nick, content, replyTo } = body;
       if (!nick || !content) return new Response('缺少昵称或内容', { status: 400, headers: corsHeaders() });
       const now = Date.now();
-      const comment = { nick, content, date: now };
+      // 生成唯一 id
+      const id = now.toString(36) + Math.random().toString(36).slice(2, 8);
+      const comment = { id, nick, content, date: now };
+      if (replyTo) comment.replyTo = replyTo;
       // 取出原有评论
       let comments = [];
       const old = await env.COMMENTS_KV.get(key);
