@@ -39,7 +39,7 @@ export default {
       const key = `img/${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
       await env.IMAGES_R2_BUCKET.put(key, await file.arrayBuffer(), { httpMetadata: { contentType: file.type } });
       // 生成公开访问 URL（需配置 R2 公网域名或自定义域名）
-      const publicUrl = `https://img.long-yu.net/${key}`;
+      const publicUrl = `https://pub-d7674e0336fc4fcf86811616cc05f900.r2.dev/${key}`;
       return new Response(JSON.stringify({ url: publicUrl }), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders() }
       });
